@@ -107,7 +107,15 @@ eyeRightMapper.SetInputConnection(eyeRight.GetOutputPort())
 eyeRightActor = vtk.vtkActor()
 eyeRightActor.SetMapper(eyeRightMapper)
 eyeRightActor.GetProperty().SetColor(0, 0, 0)
-eyeRightActor.SetPosition([-5,-5,0])
+eyeRightActor.SetPosition([-5, -5, 0])
+
+# Camera
+cam = vtk.vtkCamera()
+cam.SetFocalPoint(0, 0, 10)
+cam.SetViewUp(0, 1, 0)
+cam.SetPosition(0, 0, 200)
+cam.ParallelProjectionOn()
+cam.SetParallelScale(1)
 
 # Renderer
 ren1= vtk.vtkRenderer()
@@ -117,11 +125,12 @@ ren1.AddActor(bodyActor)
 ren1.AddActor(eyeLeftActor)
 ren1.AddActor(eyeLeftActor)
 ren1.SetBackground(0.1, 0.2, 0.4)
+ren1.SetActiveCamera(cam)
 
 # Renderer Window
 renWin = vtk.vtkRenderWindow()
 renWin.AddRenderer( ren1 )
-renWin.SetSize( 300, 300 )
+renWin.SetSize( 500, 500 )
 
 # Interactive mode
 iren = vtk.vtkRenderWindowInteractor()
@@ -129,17 +138,19 @@ iren.SetRenderWindow(renWin)
 style = vtk.vtkInteractorStyleTrackballCamera()
 iren.SetInteractorStyle(style)
 
+
 iren.Initialize()
 """ 
 cb = vtkTimerCallback(200, headActor, iren)
 iren.AddObserver('TimerEvent', cb.execute)
 cb.timerId = iren.CreateRepeatingTimer(500) """
 
-for i in range(0,360):
-    time.sleep(0.03)
+for i in range(0,10):
+    time.sleep(0.50)
 
     renWin.Render()
-    headT.RotateWXYZ(45,[10,10,10])
+    headT.Translate(1,1,0)
+    headT.RotateZ(1)
 
 
 
