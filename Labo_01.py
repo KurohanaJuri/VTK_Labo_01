@@ -1,4 +1,32 @@
 import vtk
+import time
+
+
+""" class vtkTimerCallback():
+    def __init__(self, steps, actor, iren):
+        self.timer_count = 0
+        self.steps = steps
+        self.actor = actor
+        self.iren = iren
+        self.timerId = None
+
+    def execute(self, obj, event):
+        step = 0
+        while step < self.steps:
+            print(self.timer_count)
+            self.actor.SetPosition(self.timer_count / 100.0, self.timer_count / 100.0, 0)
+            iren = obj
+            iren.GetRenderWindow().Render()
+            self.timer_count += 1
+            step += 1
+        if self.timerId:
+            iren.DestroyTimer(self.timerId)
+
+    def moveHead():
+        step = 0
+        while step < self.steps:
+
+ """
 
 # Nose
 cone = vtk.vtkConeSource()
@@ -21,6 +49,7 @@ head.SetThetaResolution(10)
 head.SetPhiResolution(10)
 
 headT = vtk.vtkTransform()
+headT.RotateX(60)
 headT.Translate(-10, 0, -10)
 
 headTF = vtk.vtkTransformFilter()
@@ -101,11 +130,20 @@ style = vtk.vtkInteractorStyleTrackballCamera()
 iren.SetInteractorStyle(style)
 
 iren.Initialize()
-iren.Start()
+""" 
+cb = vtkTimerCallback(200, headActor, iren)
+iren.AddObserver('TimerEvent', cb.execute)
+cb.timerId = iren.CreateRepeatingTimer(500) """
 
-for i in range(0, 360):
+for i in range(0,360):
     time.sleep(0.03)
 
     renWin.Render()
-    headTF.SetTransform(headT)
+    headT.RotateWXYZ(45,[10,10,10])
+
+
+
+
+iren.Start()
+
 
