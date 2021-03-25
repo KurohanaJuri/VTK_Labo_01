@@ -157,6 +157,21 @@ cb.timerId = iren.CreateRepeatingTimer(500) """
 #     headT.Translate(1,1,0)
 #     headT.RotateZ(1)
 
+# Init (innit ?)
+coneActor.SetPosition(5, 0, 0)
+coneActor.RotateZ(-90)
+
+def moveNose():
+    transform = vtk.vtkTransform()
+    coneActor.SetUserTransform(transform)
+    for i in range(0, 90):
+        time.sleep(0.03)
+        transform.RotateWXYZ(-1, 0, 1, 0) # -1 deg on the world axis Y
+        renWin.Render()
+
+# Animation
+# TODO: do the f*cking animation
+moveNose()
 
 
 iren.Start()
