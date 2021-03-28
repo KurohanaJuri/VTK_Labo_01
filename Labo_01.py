@@ -1,7 +1,10 @@
-import vtk
 import time
 
-debuging = True
+import vtk
+
+debuging = False
+
+headRadius = 5.
 
 # Nose
 cone = vtk.vtkConeSource()
@@ -19,7 +22,7 @@ coneActor.GetProperty().SetColor(255 / 255, 153 / 255, 51 / 255)
 # Head
 
 head = vtk.vtkSphereSource()
-head.SetRadius(5.)
+head.SetRadius(headRadius)
 head.SetThetaResolution(10)
 head.SetPhiResolution(10)
 
@@ -74,7 +77,7 @@ eyeRightActor.GetProperty().SetColor(0, 0, 0)
 # Camera
 camera = vtk.vtkCamera()
 camera.SetFocalPoint(0, 0, 0)
-camera.SetPosition(0, 0, 20)
+camera.SetPosition(0, 0, 120)
 camera.SetViewUp(0, 1, 0) # maybe not useful
 
 
@@ -109,32 +112,62 @@ iren.SetInteractorStyle(style)
 iren.Initialize()
  
 # Init 
-coneActor.SetPosition(5, 0, 0)
+coneActor.SetPosition(10, 0, 0)
 coneActor.RotateZ(-90)
 
-headActor.SetPosition(50,50,0)
+headActor.SetPosition(-15,0,0)
 
-bodyActor.SetPosition(50,50,0)
+bodyActor.SetPosition(0,0,0)
 
 eyeLeftActor.SetPosition(50,50,0)
 
 eyeRightActor.SetPosition(50,50,0)
 
-
-def updateAll():
-
+# animations
+def noseMove():
     noseTransform = vtk.vtkTransform()
     coneActor.SetUserTransform(noseTransform)
-
-    def noseMove():
-        noseTransform.RotateWXYZ(-1, 0, 1, 0) # -1 deg on the world axis Y
-
     
     for i in range(0, 90):
         time.sleep(0.03)
         
-        noseMove()
+        noseTransform.RotateWXYZ(-1, 0, 1, 0)  # -1 deg on the world axis Y
         renWin.Render()
+    
+    for i in range(0, 90):
+        time.sleep(0.03)
+        
+        noseTransform.RotateWXYZ(1, 0, 0, 1)  # 1 deg on the world axis Z. The coordinates change with the transformation
+        renWin.Render()
+
+    factor = 20 # to smooth the animation
+    for i in range(0, int(headRadius * factor)):
+        time.sleep(0.03)
+
+        noseTransform.Translate(0, -1 / factor, 0)
+        renWin.Render()
+
+def moveHeadAlone():
+    headTransform = vtk.vtkTransform()
+    headActor.SetUserTransform(headTransform)
+
+    for i in range(0, 90):
+        time.sleep(0.03)
+
+        headTransform.RotateWXYZ(-1, 0, 0, 1)
+        renWin.Render()
+
+    factor = 20 # to smooth the animation
+    for i in range(0, int(headRadius * factor)):
+        time.sleep(0.03)
+
+        headTransform.Translate(1 / factor, 0, 0)
+        renWin.Render()
+
+def updateAll():
+
+    moveHeadAlone()
+    noseMove()
 
 updateAll()
 iren.Start()
