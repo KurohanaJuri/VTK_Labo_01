@@ -170,11 +170,19 @@ def setEyesVisibility() :
     eyeRightActor.SetVisibility(True)
     eyeLeftActor.SetVisibility(True)
 
+def rollCamera() :
+    for i in range(0, 360):
+        time.sleep(0.03)
+
+        camera.Roll(1)
+        renWin.Render()
+
 def updateAll():
 
     moveHeadAlone()
     noseMove()
     setEyesVisibility()
+    rollCamera()
 
 
 updateAll()
