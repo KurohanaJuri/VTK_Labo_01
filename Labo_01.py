@@ -50,7 +50,7 @@ bodyActor.GetProperty().SetColor(1, 1, 1)
 # Eyes
 
 eyeLeft = vtk.vtkSphereSource()
-eyeLeft.SetRadius(2.)
+eyeLeft.SetRadius(1.)
 eyeLeft.SetThetaResolution(10)
 eyeLeft.SetPhiResolution(10)
 
@@ -63,7 +63,7 @@ eyeLeftActor.GetProperty().SetColor(0, 0, 0)
 
 
 eyeRight = vtk.vtkSphereSource()
-eyeRight.SetRadius(2.)
+eyeRight.SetRadius(1.)
 eyeRight.SetThetaResolution(10)
 eyeRight.SetPhiResolution(10)
 
@@ -87,7 +87,7 @@ renderer.AddActor(coneActor)
 renderer.AddActor(headActor)
 renderer.AddActor(bodyActor)
 renderer.AddActor(eyeLeftActor)
-renderer.AddActor(eyeLeftActor)
+renderer.AddActor(eyeRightActor)
 renderer.SetBackground(0.1, 0.2, 0.4)
 renderer.SetActiveCamera(camera)
 
@@ -95,7 +95,6 @@ renderer.SetActiveCamera(camera)
 if debuging :
     axes = vtk.vtkAxesActor()
     renderer.AddActor(axes)
-
 
 # Renderer Window
 renWin = vtk.vtkRenderWindow()
@@ -119,9 +118,12 @@ headActor.SetPosition(-15,0,0)
 
 bodyActor.SetPosition(0,0,0)
 
-eyeLeftActor.SetPosition(50,50,0)
+eyeLeftActor.SetPosition(3,10,4)
+eyeLeftActor.SetVisibility(False)
 
-eyeRightActor.SetPosition(50,50,0)
+eyeRightActor.SetPosition(-3,10,4)
+eyeRightActor.SetVisibility(False)
+
 
 # animations
 def noseMove():
@@ -164,10 +166,16 @@ def moveHeadAlone():
         headTransform.Translate(1 / factor, 0, 0)
         renWin.Render()
 
+def setEyesVisibility() :
+    eyeRightActor.SetVisibility(True)
+    eyeLeftActor.SetVisibility(True)
+
 def updateAll():
 
     moveHeadAlone()
     noseMove()
+    setEyesVisibility()
+
 
 updateAll()
 iren.Start()
