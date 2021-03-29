@@ -170,18 +170,29 @@ def setEyesVisibility() :
     eyeRightActor.SetVisibility(True)
     eyeLeftActor.SetVisibility(True)
 
-def rollCamera(angle) :
+def rollCamera(angle, sign = 1) :
+    move = 1 * sign
     for i in range(0, angle):
         time.sleep(0.03)
 
-        camera.Roll(1)
+        camera.Roll(move)
         renWin.Render()
 
-def azimuthCamera(angle) :
-     for i in range(0, angle):
+def azimuthCamera(angle, sign = 1) :
+    
+    move = 1 * sign
+    for i in range(0, angle):
         time.sleep(0.03)
 
-        camera.Azimuth(1)
+        camera.Azimuth(move)
+        renWin.Render() 
+
+def elevationCamera(angle, sign= 1) :
+    move = 1 * sign
+    for i in range(0, angle):
+        time.sleep(0.03)
+
+        camera.Elevation(move)
         renWin.Render() 
 
 def updateAll():
@@ -189,8 +200,11 @@ def updateAll():
     moveHeadAlone()
     noseMove()
     setEyesVisibility()
-    rollCamera(360)
+    rollCamera(360, -1)
     azimuthCamera(360)
+    elevationCamera(90)
+    elevationCamera(90, -1)
+
 
 updateAll()
 iren.Start()
